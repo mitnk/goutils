@@ -1,7 +1,6 @@
 package encrypt
 
 import (
-	_ "fmt"
 	"bytes"
 	"encoding/base64"
 	"errors"
@@ -68,7 +67,7 @@ func Decrypt(ciphertext, key []byte) ([]byte, error) {
 	// The IV needs to be unique, but not secure. Therefore it's common to
 	// include it at the beginning of the ciphertext.
 	if len(ciphertext) < aes.BlockSize {
-		panic("ciphertext too short")
+        return nil, errors.New("ciphertext too short")
 	}
 	iv := ciphertext[:aes.BlockSize]
 	ciphertext = ciphertext[aes.BlockSize:]
