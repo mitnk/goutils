@@ -24,6 +24,9 @@ func pad(src []byte) []byte {
 
 func unpad(src []byte) ([]byte, error) {
     length := len(src)
+	if length == 0 {
+		return nil, errors.New("cannot unpad empty string")
+	}
     unpadding := int(src[length-1])
 
     if unpadding > length {
