@@ -8,7 +8,6 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
-	"fmt"
 )
 
 func check(e error) {
@@ -19,7 +18,6 @@ func check(e error) {
 
 func pad(src []byte) []byte {
     padding := aes.BlockSize - len(src)%aes.BlockSize
-	fmt.Println("padding:", padding)
     padtext := bytes.Repeat([]byte{byte(padding)}, padding)
     return append(src, padtext...)
 }
