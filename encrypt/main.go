@@ -8,6 +8,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+	"fmt"
 )
 
 func check(e error) {
@@ -18,6 +19,7 @@ func check(e error) {
 
 func pad(src []byte) []byte {
     padding := aes.BlockSize - len(src)%aes.BlockSize
+	fmt.Println("padding:", padding)
     padtext := bytes.Repeat([]byte{byte(padding)}, padding)
     return append(src, padtext...)
 }
@@ -47,8 +49,8 @@ func Encrypt(text, key []byte) []byte {
 	iv := ciphertext[:aes.BlockSize]
 	_, err = io.ReadFull(rand.Reader, iv)
 	check(err)
-	stream := cipher.NewCFBEncrypter(block, iv)
-	stream.XORKeyStream(ciphertext[aes.BlockSize:], text)
+	stream := cipher.NewCBCEncrypter(block, iv)
+	stream.CryptBlocks(ciphertext[aes.BlockSize:], text)
 	return ciphertext
 }
 
@@ -75,9 +77,9 @@ func Decrypt(ciphertext, key []byte) ([]byte, error) {
 	iv := ciphertext[:aes.BlockSize]
 	ciphertext = ciphertext[aes.BlockSize:]
 
-	stream := cipher.NewCFBDecrypter(block, iv)
+	stream := cipher.NewCBCDecrypter(block, iv)
 	// XORKeyStream can work in-place if the two arguments are the same.
-	stream.XORKeyStream(ciphertext, ciphertext)
+	stream.CryptBlocks(ciphertext, ciphertext)
 	text, err := unpad(ciphertext)
 	if err != nil {
 		return nil, err

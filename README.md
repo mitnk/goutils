@@ -1,2 +1,3 @@
 # goutils
-A collection of home brewed go utilities 
+
+A collection of home brewed go utilities.
