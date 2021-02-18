@@ -72,11 +72,15 @@ func Decrypt(ciphertext, key []byte) ([]byte, error) {
 	if len(ciphertext) < aes.BlockSize {
         return nil, errors.New("ciphertext too short")
 	}
+	if len(ciphertext) % aes.BlockSize != 0 {
+        return nil, errors.New("ciphertext not full blocks")
+	}
 	iv := ciphertext[:aes.BlockSize]
 	ciphertext = ciphertext[aes.BlockSize:]
 
 	stream := cipher.NewCBCDecrypter(block, iv)
-	// XORKeyStream can work in-place if the two arguments are the same.
+
+	// CryptBlocks can work in-place if the two arguments are the same.
 	stream.CryptBlocks(ciphertext, ciphertext)
 	text, err := unpad(ciphertext)
 	if err != nil {
