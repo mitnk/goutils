@@ -30,7 +30,7 @@ go version
 ### Step 2: Update the Dependency
 
 ```bash
-go get -u github.com/mitnk/goutils@v3.0.0
+go get -u github.com/mitnk/goutils/v3@v3.0.1
 ```
 
 ### Step 3: Migrate Existing Encrypted Data
@@ -52,7 +52,7 @@ import (
     "errors"
     "fmt"
 
-    newencrypt "github.com/mitnk/goutils/encrypt"
+    newencrypt "github.com/mitnk/goutils/v3/encrypt"
 )
 
 // Old CBC decryption functions (copy these temporarily)
@@ -136,7 +136,7 @@ func main() {
 The API remains the same, so your existing code should work without changes:
 
 ```go
-import "github.com/mitnk/goutils/encrypt"
+import "github.com/mitnk/goutils/v3/encrypt"
 
 key := []byte("abcdefghijklmnop") // 16 bytes for AES-128
 
